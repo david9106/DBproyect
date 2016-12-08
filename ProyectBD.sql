@@ -4,7 +4,7 @@ use ProyectBD;
 create table Article(
 	id int primary key,
 	namee VARCHAR(150) not null,
-	mark VARCHAR(300) not null,
+	trademark VARCHAR(300) not null,
     characteristics VARCHAR(300) not null,
 	price int
 );
