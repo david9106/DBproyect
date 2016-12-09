@@ -1,11 +1,12 @@
-create database ProyectBD;
+create database if not exists ProyectBD;
 use ProyectBD;
 
 create table Article(
 	id int primary key,
-	namee VARCHAR(150) not null,
+	ArticleName VARCHAR(150) ,
 	trademark VARCHAR(300) not null,
-    characteristics VARCHAR(300) not null,
+    ArticleYear int not null, 
+    characteristics VARCHAR(300),
 	price int
 );
 
@@ -18,7 +19,7 @@ create table Inventory(
 
 create table Users(
 	id int primary key,
-	nameUser VARCHAR(150),
+	UserName VARCHAR(150),
 	LastName VARCHAR(15),
 	pass VARCHAR(15)
 );
@@ -33,6 +34,7 @@ create table Sales(
 	id int primary key,
 	dateSale datetime not null,
 	amount int,
+    quantity int,
 	idArticle int,
     idEmployee int,
     foreign key(idEmployee) references Users(id),
@@ -47,23 +49,17 @@ create table Warranty(
     primary key(idSale)
 );
 
-create table Purchase(
+create table Purchases(
 	id int primary key,
 	idAdm int,
 	amount int,
 	DatePurchase datetime not null,
 	name_Provider VARCHAR(100),
-	mark VARCHAR(100),
+	trademark VARCHAR(100),
 	characteristics VARCHAR(200),
 	foreign key(idAdm) references Administrator(num_adm)
 );
 
-create table Cashbox(
-	idSale int,
-    idEmployee int,
-    foreign key(idEmployee) references Users(id),
-	foreign key(idSale) references Sales(id),
-    primary key(idSale,idEmployee)
-);
+
 
 
