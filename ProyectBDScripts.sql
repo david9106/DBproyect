@@ -179,3 +179,91 @@ begin
 	end if;
 end
 //
+
+
+-- Validates and Procedures from the AdminUsers Table
+delimiter //
+create trigger ValidateAdmin before insert on Administrator
+for each row
+begin 
+	if new.NumAdm is null then
+		signal sqlstate '45000' set message_text = 'The number is incorrect', mysql_errno = 1;
+	elseif not exists(select id from Users where id = new.idEmployee) then
+		signal sqlstate '45001' set message_text = 'The User does not exist', mysql_errno = 5;
+	elseif exists(select NumAdm from Administrator where NumAdm = new.NumAdm) then
+		signal sqlstate '45001' set message_text = 'The Administrator Number already exist', mysql_errno = 5;
+    elseif exists(select idEmployee from Administrator where idEmployee = new.IdEmployee) then
+		signal sqlstate '45001' set message_text = 'The ID is an Administrator ', mysql_errno = 5;    
+	end if;
+end
+//
+delimiter;
+
+delimiter //
+create trigger UpdateValidateAdmin before update on Administrator
+for each row
+begin 
+	if new.NumAdm is null then
+		signal sqlstate '45000' set message_text = 'The Number is incorrect', mysql_errno = 1;
+	elseif not exists(select id from Users where id = new.idEmployee) then
+		signal sqlstate '45001' set message_text = 'The User does not exist', mysql_errno = 5;
+    end if;
+end
+//
+delimiter;
+
+delimiter //
+create function validateAdmin(ThisNumAdm int)
+ returns int
+ begin
+	declare NumExists int;
+    set NumExists = (select count(NumAdm) from Administrator where NumAdm=ThisNumAdm);
+    if  NumExists= 1 then
+			return 1;
+	else
+            return 0;
+	end if;    
+ end
+//
+delimiter;
+
+delimiter //
+create procedure AddAdministrator(in newNum int,in newId int)
+begin
+			INSERT INTO Administrator(`NumAdm`, `idEmployee`) VALUES (newNum, newId);
+		 
+end
+//
+delimiter;
+
+
+
+delimiter //
+create procedure DeleteAdmin(in ThisNumAdm int)
+begin
+	declare AdminExists integer;
+    
+    set AdminExists = valideteAdmin(NumAdm);
+    
+		 if adminExists = 1 then
+			delete from Administrator where NumAdm=ThisnumAdm;
+		 else
+			signal sqlstate '45000' set message_text = 'Admin does not exist', mysql_errno = 10;
+		 end if;
+end
+//
+
+
+create procedure EditAdmin(in newNum int,in newId int)
+begin
+    declare AdminExists int;
+    set AdminExists = validateAdmin(newNum);
+    
+    if AdminExists = 1 then
+		update Administrator set `idEmployee`= newId WHERE `NumAdm`= newNum;
+	else
+		signal sqlstate '45000' set message_text = 'User does not exist', mysql_errno = 10;
+	end if;
+end
+//
+-- call AddAdministrator(2,1);

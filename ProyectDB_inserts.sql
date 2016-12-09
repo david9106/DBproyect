@@ -22,7 +22,7 @@ INSERT INTO `ProyectBD`.`Users` (`id`, `UserName`, `LastName`, `pass`) VALUES ('
 INSERT INTO `ProyectBD`.`Users` (`id`, `UserName`, `LastName`, `pass`) VALUES ('4', 'Jesus', 'Garcia', 'JG');
 
 
-INSERT INTO `ProyectBD`.`Administrator` (`num_adm`, `idEmployee`) VALUES ('1', '1');
+INSERT INTO `ProyectBD`.`Administrator` (`NumAdm`, `idEmployee`) VALUES ('1', '1');
 
 INSERT INTO `ProyectBD`.`Sales` (`id`, `dateSale`, `amount`, `quantity`, `idArticle`, `idEmployee`) VALUES ('1', '2016/12/07', '3000', '1', '7', '4');
 INSERT INTO `ProyectBD`.`Sales` (`id`, `dateSale`, `amount`, `quantity`, `idArticle`, `idEmployee`) VALUES ('2', '2016/12/08', '80000', '2', '6', '2');

@@ -25,7 +25,7 @@ create table Users(
 );
 
 create table Administrator(
-	num_adm int primary key,
+	NumAdm int primary key,
 	idEmployee int,
 	foreign key(idEmployee) references Users(id)
 );
@@ -57,7 +57,7 @@ create table Purchases(
 	name_Provider VARCHAR(100),
 	trademark VARCHAR(100),
 	characteristics VARCHAR(200),
-	foreign key(idAdm) references Administrator(num_adm)
+	foreign key(idAdm) references Administrator(NumAdm)
 );
 
 
