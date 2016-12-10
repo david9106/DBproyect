@@ -275,7 +275,7 @@ begin
 end
 //
 
-
+delimiter //
 create procedure EditAdmin(in newNum int,in newId int)
 begin
     declare AdminExists int;
@@ -289,5 +289,8 @@ begin
 end
 //
 
-
+create procedure ArticleReport()
+begin
+  SELECT a.ArticleName, i.quantity, a.Price , i.quantity*a.Price as Total FROM Article a INNER JOIN Inventory i ON a.id = i.idArticle;
+end
 
