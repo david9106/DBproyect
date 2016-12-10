@@ -92,6 +92,17 @@ begin
 end
 //
 
+delimiter //
+create procedure ArticleList(in searchName VARCHAR(300))
+begin
+	 
+     	SELECT * FROM Article WHERE ArticleName like concat('%',searchName,'%');
+	
+end
+//
+delimiter;
+
+
 -- Validates and Procedures from the Users Table
 delimiter //
 create trigger ValidateUser before insert on Users
@@ -180,6 +191,17 @@ begin
 end
 //
 
+delimiter //
+create procedure UserList(in searchName VARCHAR(300))
+begin
+	 
+     	SELECT * FROM users WHERE UserName like concat('%',searchName,'%');
+	
+end
+//
+delimiter;
+
+
 
 -- Validates and Procedures from the AdminUsers Table
 delimiter //
@@ -266,4 +288,6 @@ begin
 	end if;
 end
 //
--- call AddAdministrator(2,1);
+
+
+
