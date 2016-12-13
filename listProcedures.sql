@@ -16,4 +16,4 @@
 -- call UserList('Name of alrticle');
 -- call EditUser(id,new price,'new name',' new Characteristics','new Trademark',year)
 
--- call WarrantyReport("2016/12/06","2016/12/06");
+-- call WarrantyReport("2016/12/06","2016/12/06"); --call the all warrantys between 2 dates
