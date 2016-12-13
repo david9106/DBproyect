@@ -294,3 +294,110 @@ begin
   SELECT a.ArticleName, i.quantity, a.Price , i.quantity*a.Price as Total FROM Article a INNER JOIN Inventory i ON a.id = i.idArticle;
 end
 
+
+
+-- Validates and procedures from the Article Warranty
+//
+create trigger WarrantyValidate before insert on Warranty
+for each row
+begin 
+	if new.DateStart is null then
+		signal sqlstate '45000' set message_text = 'The dataStard is incorrect', mysql_errno = 1;
+	elseif new.idSale is null then
+		signal sqlstate '45000' set message_text = 'The id is incorrect', mysql_errno = 2;
+	elseif new.DateEnd is null then
+		signal sqlstate '45000' set message_text = 'The dataEnd is incorrect', mysql_errno = 3;
+	end if;
+end
+//
+delimiter;
+
+delimiter //
+create trigger updateWarrantyValidate before update on Warranty
+for each row
+begin 
+	if new.DateStart is null then
+		signal sqlstate '45000' set message_text = 'The name is incorrect', mysql_errno = 1;
+	elseif new.idSale is null then
+		signal sqlstate '45000' set message_text = 'The id is incorrect', mysql_errno = 2;
+	elseif new.DateEnd is null then
+		signal sqlstate '45000' set message_text = 'The Trademark is incorrect', mysql_errno = 3;
+	end if;
+end
+//
+delimiter;
+
+
+delimiter //
+create function validateWarranty(newId int)
+ returns int
+ begin
+	declare idExists int;
+    set idExists = (select count(idSale) from Warranty where idSale=newId);
+    if  idExists= 1 then
+			return 1;
+	else
+            return 0;
+	end if;    
+ end
+//
+delimiter;
+
+
+
+delimiter //
+create procedure AddWarranty(in idx int, in Datestart datetime,in Dateend datetime )
+begin
+			INSERT INTO Warranty (`idSale`, `DateStart`, `DateEnd`) VALUES (idx, Datestart, Dateend);
+end
+//
+delimiter;
+
+
+delimiter //
+create procedure DeleteWarranty(in idx int)
+begin
+	declare articleExists integer;
+    
+    set articleExists = valideteWarranty(idx);
+    
+		 if articleExists = 1 then
+			delete from article where idSale=idx;
+		 else
+			signal sqlstate '45000' set message_text = 'Warranty does not exist', mysql_errno = 10;
+		 end if;
+end
+//
+
+
+create procedure EditWarranty(in idx int, in Datestart datetime,in Dateend datetime )
+begin
+    declare WarrantyExists int;
+    set WarrantyExists = validateWarranty(newId);
+    
+    if WarrantyExists = 1 then
+		update Warranty set `DateStart`= Datestart, `DateEnd`= Dateend,`idSale` = newCharac WHERE `idSale`= newId;
+	else
+		signal sqlstate '45000' set message_text = 'Warranty does not exist', mysql_errno = 11;
+	end if;
+end
+//
+
+delimiter //
+create procedure  WarrantyList(in searchName VARCHAR(300))
+begin
+     	SELECT * FROM  Warranty WHERE   idSale like concat('%',searchName,'%');
+end
+//
+
+
+-- report warranty
+delimiter //
+create procedure WarrantyReport(in startDate datetime,in endDate datetime)
+begin
+  SELECT w.DateStart,w.DateEnd,u.UserName  as vendedor, a.ArticleName as Articulo,s.amount as Precio FROM Warranty w inner join Sales s ON w.idSale = s.id inner join Article a ON s.idArticle = a.id inner join Users u ON s.idEmployee = u.id where w.DateStart >= startDate and w.DateStart <=endDate; 
+end
+
+//
+
+
